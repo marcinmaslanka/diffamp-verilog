@@ -3,42 +3,37 @@ Differential Amplifier Verilog-A Model
 This repository contains the Verilog-A model for a Differential Amplifier designed for use in Cadence Virtuoso. The model includes the behavior of the amplifier with non-linear saturation characteristics using a hyperbolic tangent (tanh) function for the differential voltage input.
 Features:
 
-    Differential amplifier behavior with a gain parameter.
-
-    Offset voltage for output shifting.
-
-    Nonlinear saturation modeling using the tanh function.
-
-    Simulation-ready in Cadence Virtuoso.
-    
-  ![diffamp](https://github.com/user-attachments/assets/298f2950-7566-4e68-86e0-af28dbc2f4d9)
+- Differential amplifier behavior with a gain parameter.
+- Offset voltage for output shifting.
+- Nonlinear saturation modeling using the tanh function.
+- Simulation-ready in Cadence Virtuoso.
 
 
-Table of Contents:
+![diffamp](https://github.com/user-attachments/assets/933bb357-2c21-4b81-b1c4-d6caa9734ab0)
 
-    Getting Started
 
-    Verilog-A Model Description
+# Table of Contents:
 
-    How to Use
+- Getting Started
+- Verilog-A Model Description
+- How to Use
+- Simulation in Cadence Virtuoso
+- License
 
-    Simulation in Cadence Virtuoso
 
-    License
-
-Getting Started
+## Getting Started
 
 To get started with the differential amplifier model, follow these steps:
 
-    Clone the Repository: Clone this repository to your local machine using the following command:
+- Clone the Repository: Clone this repository to your local machine using the following command:
 
     git clone https://github.com/yourusername/differential-amplifier-verilog-a.git
 
-    Add Verilog-A Model to Cadence Virtuoso: Copy the Verilog-A code (diffamp.va) from this repository to your Cadence Virtuoso project.
+- Add Verilog-A Model to Cadence Virtuoso: Copy the Verilog-A code (diffamp.va) from this repository to your Cadence Virtuoso project.
+- Include Verilog-A File: In your Cadence project, create a new cellview for the model and paste the Verilog-A code.
 
-    Include Verilog-A File: In your Cadence project, create a new cellview for the model and paste the Verilog-A code.
 
-Verilog-A Model Description
+## Verilog-A Model Description
 
 The Verilog-A code models a Differential Amplifier with the following parameters:
 
@@ -48,94 +43,57 @@ The Verilog-A code models a Differential Amplifier with the following parameters
 
     offset: An offset voltage that shifts the output, simulating a DC bias or level shift.
 
-Verilog-A Code:
 
-`include "constants.vams"
-`include "discipline.h"
+## How to Use
 
-module diffamp(out, in1, in2);
-    output out;        // Output node of the differential amplifier
-    input  in1, in2;   // Differential input nodes
+- Open Cadence Virtuoso: Open Cadence Virtuoso and create a new library or use an existing library.
 
-    electrical out, in1, in2;  // Declare electrical connections for the nodes
+    - Create a New Cell for Verilog-A:
 
-    // Parameters:
-    parameter real gain = 40;   // Gain of the differential amplifier
-    parameter real vcc = 3;     // Supply voltage in volts (V)
-    parameter real offset = 1.5; // Offset voltage in volts (V)
+        - From the Library Manager, create a new cellview.
 
-    analog begin
-        // Differential amplifier behavior:
-        V(out) <+ offset + (vcc/2) * tanh(gain / vcc * (V(in1) - V(in2)));
-        // The tanh function ensures that the output is within a reasonable range
-        // and exhibits a saturating behavior as the input difference increases.
-    end
-endmodule
+        - Set the View Name to veriloga and the Tool to Verilog-A.
 
-Parameters:
+    - Paste the Verilog-A Code:
 
-    gain: The amplification factor for the differential input.
+        - Copy the Verilog-A code from the repository and paste it into the editor.
 
-    vcc: Supply voltage, which determines the maximum output swing.
+    - Save and Check the Model:
 
-    offset: A DC offset that shifts the output voltage.
+        - Save the Verilog-A code and run the Check and Save process to validate the syntax.
 
-Functionality:
+    - Instantiate the Model in a Schematic:
 
-    The differential amplifier amplifies the difference between in1 and in2.
+        - Open your schematic in Cadence Virtuoso.
 
-    The output voltage is governed by a hyperbolic tangent function that models saturation when the difference between inputs becomes large.
+        - Use the component you just created by instantiating it in your schematic.
 
-    The amplifier behavior mimics a real-world operational amplifier with a non-linear response.
+        - Connect the input and output nodes to simulate the differential amplifier in the circuit.
 
-How to Use
 
-    Open Cadence Virtuoso: Open Cadence Virtuoso and create a new library or use an existing library.
+## Simulation in Cadence Virtuoso
 
-    Create a New Cell for Verilog-A:
+### Set Up ADE (Analog Design Environment):
 
-        From the Library Manager, create a new cellview.
+- From the Cadence Virtuoso toolbar, go to Launch ADE.
 
-        Set the View Name to veriloga and the Tool to Verilog-A.
+- Set up the simulation parameters (e.g., transient analysis or DC analysis).
 
-    Paste the Verilog-A Code:
+### Run the Simulation:
 
-        Copy the Verilog-A code from the repository and paste it into the editor.
+- Set the desired simulation type (e.g., transient, AC sweep).
 
-    Save and Check the Model:
+- Choose the outputs to plot (e.g., output voltage).
 
-        Save the Verilog-A code and run the Check and Save process to validate the syntax.
+- Click Run to simulate the circuit and observe the behavior of the differential amplifier.
 
-    Instantiate the Model in a Schematic:
+### Analyze the Results:
 
-        Open your schematic in Cadence Virtuoso.
+- After the simulation, observe the voltage at the output node.
 
-        Use the component you just created by instantiating it in your schematic.
+- The output should exhibit the expected behavior based on the input difference, with saturation limits determined by the gain and supply voltage.
 
-        Connect the input and output nodes to simulate the differential amplifier in the circuit.
+![diffamp](https://github.com/user-attachments/assets/298f2950-7566-4e68-86e0-af28dbc2f4d9)
 
-Simulation in Cadence Virtuoso
+---
 
-    Set Up ADE (Analog Design Environment):
-
-        From the Cadence Virtuoso toolbar, go to Launch ADE.
-
-        Set up the simulation parameters (e.g., transient analysis or DC analysis).
-
-    Run the Simulation:
-
-        Set the desired simulation type (e.g., transient, AC sweep).
-
-        Choose the outputs to plot (e.g., output voltage).
-
-        Click Run to simulate the circuit and observe the behavior of the differential amplifier.
-
-    Analyze the Results:
-
-        After the simulation, observe the voltage at the output node.
-
-        The output should exhibit the expected behavior based on the input difference, with saturation limits determined by the gain and supply voltage.
-
-License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
