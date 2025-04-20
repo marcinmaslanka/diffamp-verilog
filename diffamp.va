@@ -1,0 +1,27 @@
+`include "constants.vams"  // Include standard constants for simulations
+`include "discipline.h"    // Include discipline definition (e.g., electrical)
+
+module diffamp(out, in1, in2);
+    output out;        // Output node of the differential amplifier
+    input  in1, in2;   // Differential input nodes
+
+    electrical out, in1, in2;  // Declare electrical connections for the nodes
+
+    // Parameters:
+    // gain    - Gain of the amplifier (how much the input difference is amplified)
+    // vcc     - Supply voltage for the differential amplifier
+    // offset  - Offset voltage that shifts the output
+    parameter real gain = 40;   // Gain of the differential amplifier
+    parameter real vcc = 3;     // Supply voltage in volts (V)
+    parameter real offset = 1.5; // Offset voltage in volts (V)
+
+    analog begin
+        // Differential amplifier behavior:
+        // The output voltage is the offset voltage plus half the supply voltage
+        // multiplied by the hyperbolic tangent of the input voltage difference.
+        // This models the characteristic saturation behavior of differential amplifiers.
+        V(out) <+ offset + (vcc/2) * tanh(gain / vcc * (V(in1) - V(in2)));
+        // The tanh function ensures that the output is within a reasonable range
+        // and exhibits a saturating behavior as the input difference increases.
+    end
+endmodule
